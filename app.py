@@ -22,17 +22,17 @@ decode_labels = {n:label for n,label in enumerate(labels)}
 @app.route("/", methods=['GET','POST'])
 def home():
     if request.method == "POST":
-        img = Image.open(request.files.get("img", ''))
+        image = request.files.get("img", '')
+        img = Image.open(image)
         print(type(img))
         print(img)
         inputs = feature_extractor(images=img, return_tensors="pt")
         outputs = model(**inputs)
         logits = outputs.logits
         pred = logits.argmax(-1).item()
-        print(pred)
         label = decode_labels[pred]
-        print(label)
-        return render_template('index.html', label=label, image=img)
+        print(decode_labels)
+        return render_template('index.html', label=label, image=image)
     return render_template('index.html')
 
 if __name__ == "__main__":
