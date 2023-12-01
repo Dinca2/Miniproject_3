@@ -7,9 +7,7 @@ import torch
 import os
 from PIL import Image
 
-UPLOAD_FOLDER = "./uploads/"
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 checkpoint = 'google/vit-base-patch16-224'
 model = ViTForImageClassification.from_pretrained(checkpoint, ignore_mismatched_sizes=True)
@@ -17,8 +15,11 @@ model.load_state_dict(torch.load('model.pth'))
 feature_extractor = ViTFeatureExtractor.from_pretrained(checkpoint)
 
 labels = os.listdir("./Micro_Organism")
-decode_labels = {n:label for n,label in enumerate(labels)}
-
+decode_labels = {0: 'Amoeba',
+                 1: 'Euglena', 2: 'Hydra',
+                 3: 'Paramecium', 4: 'Rod_bacteria',
+                 5: 'Spherical_bacteria', 6: 'Spiral_bacteria', 
+                 7: 'Yeast'}
 @app.route("/", methods=['GET','POST'])
 def home():
     if request.method == "POST":
