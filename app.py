@@ -21,6 +21,8 @@ decode_labels = {n:label for n,label in enumerate(labels)}
 def home():
     if request.method == "POST":
         img = request.form.get("img")
+        print(type(img))
+        print(img)
         inputs = feature_extractor(images=img, return_tensors="pt")
         outputs = model(**inputs)
         logits = outputs.logits
