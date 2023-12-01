@@ -27,13 +27,13 @@ def home():
     if request.method == "POST":
         image = request.files.get("img", '')
         img = Image.open(image)
-        image = os.path.join(app.config['UPLOAD_FOLDER'],request.form.get("img", ''))
+        img.save('./uploads/temp.jpg')
         inputs = feature_extractor(images=img, return_tensors="pt")
         outputs = model(**inputs)
         logits = outputs.logits
         pred = logits.argmax(-1).item()
         label = decode_labels[pred]
-        return render_template('index.html', label=label, image=image)
+        return render_template('index.html', label=label, image='./uploads/temp.jpg')
     return render_template('index.html')
 
 if __name__ == "__main__":
