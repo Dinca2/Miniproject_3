@@ -33,7 +33,7 @@ def home():
         logits = outputs.logits
         pred = logits.argmax(-1).item()
         label = decode_labels[pred]
-        return render_template('index.html', label=label, image='/uploads/temp.jpg')
+        return render_template('index.html', label=label, image='uploads/temp.jpg')
     return render_template('index.html')
 
 if __name__ == "__main__":
