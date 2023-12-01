@@ -27,8 +27,7 @@ def home():
     if request.method == "POST":
         image = request.files.get("img", '')
         img = Image.open(image)
-        print(image)
-        image = os.path.join(app.config['UPLOAD_FOLDER'],image)
+        image = os.path.join(app.config['UPLOAD_FOLDER'],request.form.get("img", ''))
         inputs = feature_extractor(images=img, return_tensors="pt")
         outputs = model(**inputs)
         logits = outputs.logits
