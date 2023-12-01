@@ -7,7 +7,9 @@ import torch
 import os
 from PIL import Image
 
+UPLOAD_FOLDER = "./uploads/"
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 checkpoint = 'google/vit-base-patch16-224'
 model = ViTForImageClassification.from_pretrained(checkpoint, ignore_mismatched_sizes=True)
@@ -20,7 +22,7 @@ decode_labels = {n:label for n,label in enumerate(labels)}
 @app.route("/", methods=['GET','POST'])
 def home():
     if request.method == "POST":
-        img = request.form.get("img", '')
+        img = request.files['file']
         print(type(img))
         print(img)
         inputs = feature_extractor(images=img, return_tensors="pt")
