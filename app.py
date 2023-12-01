@@ -1,12 +1,9 @@
 
 from flask import Flask, request, render_template
 from transformers import ViTForImageClassification,  ViTFeatureExtractor
-import numpy as np
-import pandas as pd
 import torch
 import os
 from PIL import Image
-import base64
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "./uploads"
@@ -27,13 +24,12 @@ def home():
     if request.method == "POST":
         image = request.files.get("img", '')
         img = Image.open(image)
-        img.save('./uploads/temp.jpg')
         inputs = feature_extractor(images=img, return_tensors="pt")
         outputs = model(**inputs)
         logits = outputs.logits
         pred = logits.argmax(-1).item()
         label = decode_labels[pred]
-        return render_template('index.html', label=label, image='uploads/temp.jpg')
+        return render_template('index.html', label=label)
     return render_template('index.html')
 
 if __name__ == "__main__":
