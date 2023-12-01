@@ -6,6 +6,7 @@ import pandas as pd
 import torch
 import os
 from PIL import Image
+import base64
 
 app = Flask(__name__)
 
@@ -25,6 +26,8 @@ def home():
     if request.method == "POST":
         image = request.files.get("img", '')
         img = Image.open(image)
+        image = base64.b64encode(image.read()).decode("utf-8")
+        
         print(type(img))
         print(img)
         inputs = feature_extractor(images=img, return_tensors="pt")
