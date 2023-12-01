@@ -22,7 +22,7 @@ decode_labels = {n:label for n,label in enumerate(labels)}
 @app.route("/", methods=['GET','POST'])
 def home():
     if request.method == "POST":
-        img = request.files.get("img", '')
+        img = Image.open(request.files.get("img", ''))
         print(type(img))
         print(img)
         inputs = feature_extractor(images=img, return_tensors="pt")
